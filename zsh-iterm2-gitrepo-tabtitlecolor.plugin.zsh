@@ -74,10 +74,6 @@ zsh_iterm2_gitrepo_tabtitle_git_repo_color() {
     local hash=$(printf '%s' "$repo_name" | md5sum | awk '{print $1}')
     local hash_num=$((0x${hash:0:8})) # Use the first 8 hex digits as a number
 
-    echo "hash $hash"
-    echo "hash_num $hash_num"
-    echo "color names $color_names"
-    echo "color names ${#color_names[@]}"
     # Map the hash to a color name index
     local index=$((hash_num % ${#color_names[@]}))
     
