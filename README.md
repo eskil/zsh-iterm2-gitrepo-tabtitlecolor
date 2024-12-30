@@ -15,13 +15,13 @@ name. This ensure colours are consistent over sessions.
 1. Clone the repository into the custom plugins directory of Oh My Zsh:
 
 ```
-git clone https://github.com/eskilzsh-iterm2-gitrepo-tabtitlecolor.git ~/.oh-my-zsh/custom/plugins//zsh-iterm2-gitrepo-tabtitlecolor
+git clone https://github.com/eskil/zsh-iterm2-gitrepo-tabtitlecolor.git ~/.oh-my-zsh/custom/plugins/zsh-iterm2-gitrepo-tabtitlecolor
 ```
 
 2. Add ` gitrepoiterm2tabtitlecolor` to the list of plugins in your `.zshrc` file:
 
 ```
-plugins=(...  gitrepoiterm2tabtitlecolor)
+plugins=(...  zsh-iterm2-gitrepo-tabtitlecolor)
 ```
 
 3. Reload your Zsh configuration or restart your terminal session:
