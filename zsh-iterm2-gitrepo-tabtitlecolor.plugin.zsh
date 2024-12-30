@@ -1,5 +1,5 @@
 # Associative array of color names and hex values
-typeset -A colors=(
+typeset -A zsh_iterm2_gitrepo_tabtitle_colors=(
     "Black"         "#000000"
     "White"         "#FFFFFF"
     "Red"           "#FF0000"
@@ -55,50 +55,8 @@ typeset -A colors=(
     "Violet"        "#EE82EE"
 )
 
-# Function to compute a consistent color name from a string
-string_to_color_name() {
-    local input="$1"
-    
-    # Get an array of the color names
-    local color_names=(${(k)colors})
-    
-    # Compute a hash value for the string and convert it to a number
-    local hash=$(printf '%s' "$input" | md5sum | awk '{print $1}')
-    local hash_num=$((0x${hash:0:8})) # Use the first 8 hex digits as a number
-    
-    # Map the hash to a color name index
-    local index=$((hash_num % ${#colors[@]}))
-    
-    # Return the corresponding color name
-    echo "${colors[$index]}"
-}
-
 # Function to compute a consistent color for the current Git repository
-git_repo_color() {
-    # Get the current Git repository name
-    local repo_name
-    if repo_name=$(git rev-parse --show-toplevel 2>/dev/null); then
-	# Use the directory name of the repo as the identifier
-	repo_name=$(basename "$repo_name")
-	string_to_color_name(repo_name)
-    else
-	return 1
-    fi
-}
-
-git_repo_title() {
-    # Get the current Git repository name
-    local repo_name
-    if repo_name=$(git rev-parse --show-toplevel 2>/dev/null); then
-	# Use the directory name of the repo as the identifier      
-	repo_name=$(basename "$repo_name")
-	local upper_repo_name="${repo_name:u}"
-	echo -ne "\e]1;${uppper_repo_name}\a"
-    fi
-}
-
-# Function to compute a consistent color for the current Git repository
-git_repo_color() {
+zsh_iterm2_gitrepo_tabtitle_git_repo_color() {
     # Get the current Git repository name
     local repo_name
     if repo_name=$(git rev-parse --show-toplevel 2>/dev/null); then
@@ -110,12 +68,16 @@ git_repo_color() {
     fi
     
     # Get an array of color names
-    local color_names=(${(k)colors})
+    local color_names=(${(k)zsh_iterm2_gitrepo_tabtitle_colors})
     
     # Compute a hash of the repository name
     local hash=$(printf '%s' "$repo_name" | md5sum | awk '{print $1}')
-    local hash_num=$((0x${hash:0:4})) # Use the first 8 hex digits as a number
-    
+    local hash_num=$((0x${hash:0:8})) # Use the first 8 hex digits as a number
+
+    echo "hash $hash"
+    echo "hash_num $hash_num"
+    echo "color names $color_names"
+    echo "color names ${#color_names[@]}"
     # Map the hash to a color name index
     local index=$((hash_num % ${#color_names[@]}))
     
@@ -125,7 +87,7 @@ git_repo_color() {
 }
 
 # Function to set iTerm2 tab color and name based on the current Git repository
-set_iterm2_tab_color() {
+zsh_iterm2_gitrepo_tabtitle_set_iterm2_tab_color() {
   # Get the current Git repository name (e.g., "my-repo")
   local repo_name=$(git -C "$PWD" rev-parse --show-toplevel 2>/dev/null)
   
@@ -142,12 +104,14 @@ set_iterm2_tab_color() {
   local upper_repo_name="${repo_name:u}"
 
   # Extract the hex color from the output of `git_repo_color` function
-  local repo_color=$(git_repo_color)
+  local repo_color=$(zsh_iterm2_gitrepo_tabtitle_git_repo_color)
   local hex_color="${repo_color##* }" # Get the last part after the space (#RRGGBB)
 
   # Validate the hex color format
   if [[ "$hex_color" != \#([a-fA-F0-9])([a-fA-F0-9])([a-fA-F0-9])([a-fA-F0-9])([a-fA-F0-9])([a-fA-F0-9]) ]]; then
     echo "Invalid color format: $hex_color"
+    echo "repo_color: $repo_color"
+    echo "repo_name: $repo_name"
     return 1
   fi
 
@@ -170,7 +134,7 @@ set_iterm2_tab_color() {
 
 autoload -U add-zsh-hook
 
-add-zsh-hook chpwd set_iterm2_tab_color
+add-zsh-hook chpwd zsh_iterm2_gitrepo_tabtitle_set_iterm2_tab_color
 
 # Set the initial background.
-set_iterm2_tab_color
+zsh_iterm2_gitrepo_tabtitle_set_iterm2_tab_color
