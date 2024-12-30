@@ -1,4 +1,4 @@
-# gitrepo-iterm2-tab-title-color pluging
+# gitrepo-iterm2-tab-title-color plugin
 
 `zsh-iterm2-gitrepo-tabtitlecolor` changes iterm2 tab title and color per repo. 
 
@@ -9,6 +9,15 @@ some repo that I'm working on.
 This plugin then sets the tab title to the repo name (capitalised) and
 the tab title (not background) colour to a colour hashed from the repo
 name. This ensure colours are consistent over sessions.
+
+Example, clone this repo, cd there and run;
+
+```
+$ zsh_iterm2_gitrepo_tabtitle_git_repo_color
+LightBlue #ADD8E6
+```
+
+`zsh-iterm2-gitrepo-tabtitlecolor` always resolves to `LightBlue` tab color.
 
 ## Installation
 
