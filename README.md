@@ -33,6 +33,12 @@ git clone https://github.com/eskil/zsh-iterm2-gitrepo-tabtitlecolor.git ~/.oh-my
 plugins=(...  zsh-iterm2-gitrepo-tabtitlecolor)
 ```
 
+2.1. disable autotitle
+
+```
+DISABLE_AUTO_TITLE="true"
+```
+
 3. Reload your Zsh configuration or restart your terminal session:
 
 ```
